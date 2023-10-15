@@ -1,0 +1,11 @@
+.qmake.stash
+ABMS_Server.pro.user
+ABMS_Server.qtvscr
+ABMS_Server.sln
+ABMS_Server.vcxproj
+ABMS_Server.vcxproj.filters
+ABMS_Server.vcxproj.user
+/.vs
+/debug
+/release
+/x64
