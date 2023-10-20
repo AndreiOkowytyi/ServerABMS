@@ -16,6 +16,21 @@
 #include "queue_for_working_with_threads.h"
 #include "secondary_task_control_unit.h"
 
+class ClientData : public QObject {
+	Q_OBJECT
+ public:
+	 ClientData(qintptr key, QTcpSocket* Socket);
+	 ~ClientData();
+	 unsigned int getKey();
+
+ private:
+	 qintptr m_key = 0;
+	 QTcpSocket* p_Socket = nullptr;
+
+signals:
+	void delete_();
+};
+
 class WorkingThread {
  public:
 	 void setWorkibg() {}
@@ -41,6 +56,7 @@ class FlowOfIncomingRequestsThread : public QObject { // Класс отвечающий за при
 	 QTcpSocket        *p_socket       = nullptr; // Указатель для работы с сокетом.
 
      std::map<qintptr, std::unique_ptr<QTcpSocket>> *m_MapSocket = nullptr; // Для быстрого доступа к сокетам через дискриптор
+	 std::map<qintptr, std::unique_ptr<ClientData>>m_Data;
 
 	 QByteArray m_data;
 	 quint16 m_buffer = 0;
@@ -54,6 +70,7 @@ class FlowOfIncomingRequestsThread : public QObject { // Класс отвечающий за при
 	 void slotReadyRead();
 	 void discSocket();
      void run();
+	 void workClientData();
 };
 
 

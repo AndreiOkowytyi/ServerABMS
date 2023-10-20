@@ -5,25 +5,59 @@
 #include <chrono>
 #include <iostream>
 
+
+ClientData::ClientData(qintptr key, QTcpSocket* MapSocket) {
+
+    this->m_key = key;
+    this->p_Socket = MapSocket;
+
+    QObject::connect(p_Socket, &QTcpSocket::destroyed, this, [this]() {
+
+        emit delete_();
+        });
+}
+
+ClientData::~ClientData() {
+
+
+}
+
+unsigned int ClientData::getKey() {
+
+    return this->m_key;
+}
+
+
 FlowOfIncomingRequestsThread::FlowOfIncomingRequestsThread(Queue<QByteArray>& QueueRequest, std::map<qintptr, std::unique_ptr<QTcpSocket>> &MapSocket,
     Queue<qintptr>* descriptor) {
 
     this->p_QueueRequest = &QueueRequest;
     this->p_Queue = descriptor;
     this->m_MapSocket = &MapSocket;
-
-    QTimer *p = new QTimer;
-
-    QObject::connect(p, &QTimer::timeout, this, &FlowOfIncomingRequestsThread::run );
-    p->start(1000);
 }
 
 FlowOfIncomingRequestsThread::~FlowOfIncomingRequestsThread() { if(this->p_timer != nullptr) delete this->p_timer; }
 
 void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
 
-    QObject::connect(m_MapSocket->at(descriptor).get(), &QTcpSocket::readyRead, this, &FlowOfIncomingRequestsThread::slotReadyRead, Qt::QueuedConnection);
-    QObject::connect(m_MapSocket->at(descriptor).get(), &QTcpSocket::disconnected, this, &FlowOfIncomingRequestsThread::discSocket, Qt::QueuedConnection);
+    this->p_socket = new QTcpSocket;
+    p_socket->setSocketDescriptor(descriptor);
+
+    m_Data.emplace(std::pair<qintptr, std::unique_ptr<ClientData>>(descriptor, std::make_unique<ClientData>(descriptor, p_socket)));
+
+
+    QObject::connect(p_socket, &QTcpSocket::readyRead, this, &FlowOfIncomingRequestsThread::slotReadyRead, Qt::QueuedConnection);
+    QObject::connect(p_socket, &QTcpSocket::disconnected, this, &FlowOfIncomingRequestsThread::discSocket, Qt::QueuedConnection);
+    QObject::connect(p_socket, &QTcpSocket::destroyed, this, [this]() { 
+
+        qDebug() << "DELETE ";
+
+        p_timer = new QTimer;
+        QObject::connect(p_timer, &QTimer::timeout, this, &FlowOfIncomingRequestsThread::run);
+        p_timer->start(1000);
+        });
+
+    QObject::connect(m_Data.at(descriptor).get(), &ClientData::delete_, this, &FlowOfIncomingRequestsThread::workClientData, Qt::QueuedConnection);
 
     m_count_client++;
 
@@ -31,8 +65,6 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
     qDebug() << "New connect: " << m_count_client;
     std::cout << "ID thread: " << std::this_thread::get_id() << ";" << std::endl << "Descriptor: " << descriptor << ";" << std::endl;
 #endif
-
-    if(!this->p_Queue->empty()) run();
 }
 
 void FlowOfIncomingRequestsThread::slotReadyRead() {
@@ -64,20 +96,19 @@ void FlowOfIncomingRequestsThread::slotReadyRead() {
         }
     }
     else qDebug() << "Fail read";
-    this->m_MapSocket->erase(p_socket->socketDescriptor());
-    if(!this->p_Queue->empty()) run();
 }
 
 void FlowOfIncomingRequestsThread::discSocket() {
 
+    delete p_timer;
+    p_timer = nullptr;
+
     this->p_socket = (QTcpSocket*)sender();
-    std::cout << p_socket->socketDescriptor();
+    this->p_socket->deleteLater();
 
 #ifdef TEST
-    qDebug() << "Disc :" +  QString::number(p_socket->socketDescriptor()) << m_MapSocket->size();
+    qDebug() << "Disc socket";
 #endif
-
-    this->m_MapSocket->erase(p_socket->socketDescriptor());
     m_count_client--;
 }
 
@@ -98,6 +129,19 @@ void FlowOfIncomingRequestsThread::run() {
 int FlowOfIncomingRequestsThread::countClient() { return this->m_count_client; }
 
 Queue<qintptr>* FlowOfIncomingRequestsThread::getQueue() { return this->p_Queue; }
+
+void FlowOfIncomingRequestsThread::workClientData() {
+
+    ClientData *p_tenp = (ClientData*)sender();
+
+    qDebug() << m_Data.size();
+
+    this->m_Data.erase(p_tenp->getKey());
+
+    qDebug() << m_Data.size();
+
+    qDebug() << "workClientData";
+}
 
 
 RequestProcessingThread::RequestProcessingThread(Queue<QByteArray> &QueueRequest, Queue<QByteArray> &QueueResult){

@@ -25,8 +25,8 @@ FlowControlBlock::~FlowControlBlock() {
 
 void FlowControlBlock::newClient(qintptr socketDescriptor) {
 
-    this->m_MapSocket.emplace(std::pair<qintptr, std::unique_ptr<QTcpSocket>>(socketDescriptor, std::make_unique<QTcpSocket>()));
-    m_MapSocket.at(socketDescriptor).get()->setSocketDescriptor(socketDescriptor);
+   // this->m_MapSocket.emplace(std::pair<qintptr, std::unique_ptr<QTcpSocket>>(socketDescriptor, std::make_unique<QTcpSocket>()));
+    //m_MapSocket.at(socketDescriptor).get()->setSocketDescriptor(socketDescriptor);
 	threadLoad()->emplace(socketDescriptor);
 }
 
