@@ -19,13 +19,17 @@
 class ClientData : public QObject {
 	Q_OBJECT
  public:
-	 ClientData(qintptr key, QTcpSocket* Socket);
-	 ~ClientData();
+	 ClientData(qintptr key, QTcpSocket* Socket, int id = 0);
+
 	 unsigned int getKey();
+	 QTcpSocket* getSocket();
+	 int getId();
+	 ClientData* getThis();
 
  private:
 	 qintptr m_key = 0;
 	 QTcpSocket* p_Socket = nullptr;
+	 int m_id = 0;
 
 signals:
 	void delete_();
@@ -42,8 +46,8 @@ class WorkingThread {
 class FlowOfIncomingRequestsThread : public QObject { // Класс отвечающий за прием новых клиентов, и подготовку запросов.
 	Q_OBJECT
  public:
-	 FlowOfIncomingRequestsThread(Queue<QByteArray> &QueueRequest, std::map<qintptr, std::unique_ptr<QTcpSocket>> &MapSocket,
-		 Queue<qintptr>*descriptor);
+	 FlowOfIncomingRequestsThread(Queue<QByteArray> &QueueRequest,
+		 Queue<qintptr>*descriptor, Data<ClientData> &data);
 	 ~FlowOfIncomingRequestsThread();
 
      void newConnection(qintptr descriptor);
@@ -54,14 +58,15 @@ class FlowOfIncomingRequestsThread : public QObject { // Класс отвечающий за при
      Queue<qintptr>    *p_Queue        = nullptr; // Очередь запросов на добавления подключения.
 	 Queue<QByteArray> *p_QueueRequest = nullptr; // Очередь для добавления готовых запросов для последующих потоков.
 	 QTcpSocket        *p_socket       = nullptr; // Указатель для работы с сокетом.
+	 Data<ClientData>  *p_Data         = nullptr;
 
-     std::map<qintptr, std::unique_ptr<QTcpSocket>> *m_MapSocket = nullptr; // Для быстрого доступа к сокетам через дискриптор
 	 std::map<qintptr, std::unique_ptr<ClientData>>m_Data;
 
 	 QByteArray m_data;
 	 quint16 m_buffer = 0;
 
      bool m_v = true;
+	 bool m_a = true;
 	 int m_count_client = 0; // Количество активных соед. 
 
 	 QTimer* p_timer = nullptr;
@@ -87,12 +92,12 @@ class RequestProcessingThread : public WorkingThread { // Обработка запросов
 
 class MessageThread : public WorkingThread { // Отправка готовых звпросов
  public:
-	 MessageThread(Queue<QByteArray> &QueueResult, std::map<qintptr, std::unique_ptr<QTcpSocket>> &MapSocket);
+	 MessageThread(Queue<QByteArray> &QueueResult, Data<ClientData> &data);
 	 void run();
 
  private:
-	std::map<qintptr, std::unique_ptr<QTcpSocket>>* p_MapSocket = nullptr;
 	Queue<QByteArray> *p_QueueResult = nullptr;
 	QTcpSocket *p_socket             = nullptr;
+	Data<ClientData> *p_Data         = nullptr;
 };
 #endif //WORKING_THREAD

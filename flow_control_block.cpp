@@ -11,7 +11,7 @@ FlowControlBlock::FlowControlBlock() {
 	allocationThread(thread_work);
 
 	p_procassingThread = new RequestProcessingThread(m_QueueRequest, m_QueueResult);
-	p_mesThread        = new MessageThread(m_QueueResult, m_MapSocket);
+	p_mesThread        = new MessageThread(m_QueueResult, m_Data);
 
 	if (p_procassingThread != nullptr && p_mesThread != nullptr) createThread(thread_work);
 	else qDebug() << "Error Start Server";
@@ -25,8 +25,6 @@ FlowControlBlock::~FlowControlBlock() {
 
 void FlowControlBlock::newClient(qintptr socketDescriptor) {
 
-   // this->m_MapSocket.emplace(std::pair<qintptr, std::unique_ptr<QTcpSocket>>(socketDescriptor, std::make_unique<QTcpSocket>()));
-    //m_MapSocket.at(socketDescriptor).get()->setSocketDescriptor(socketDescriptor);
 	threadLoad()->emplace(socketDescriptor);
 }
 
@@ -78,7 +76,7 @@ void FlowControlBlock::createThread(const short* const thread_work) {
 		this->m_v_QueueDescriptor.emplace_back(std::make_unique<Queue<qintptr>>());
 
 		this->m_v_FlowOfIncomingRequestsThread.emplace_back(std::make_unique<FlowOfIncomingRequestsThread>
-			                                  (this->m_QueueRequest, this->m_MapSocket, m_v_QueueDescriptor[x].get()));
+			                                  (this->m_QueueRequest, m_v_QueueDescriptor[x].get(), this->m_Data));
 
 		this->m_v_thread.emplace_back(std::make_unique<QThread>());
 		this->m_v_FlowOfIncomingRequestsThread[x].get()->moveToThread(this->m_v_thread[x].get());
