@@ -5,38 +5,8 @@
 #include <chrono>
 #include <iostream>
 
-
-ClientData::ClientData(qintptr key, QTcpSocket* MapSocket, int id) {
-
-    this->m_key = key;
-    this->p_Socket = MapSocket;
-
-    QObject::connect(p_Socket, &QTcpSocket::destroyed, this, [this]() {
-
-        emit delete_();
-        });
-}
-
-unsigned int ClientData::getKey() {
-
-    return this->m_key;
-}
-
-QTcpSocket* ClientData::getSocket() {
-
-    return this->p_Socket;
-}
-
-int ClientData::getId() {
-
-    return this->m_id;
-}
-
-ClientData* ClientData::getThis() { return this; }
-
-
 FlowOfIncomingRequestsThread::FlowOfIncomingRequestsThread(Queue<QByteArray>& QueueRequest, Queue<qintptr>* descriptor, 
-    Data<ClientData>& data) {
+    Data& data) {
 
     this->p_QueueRequest = &QueueRequest;
     this->p_Queue = descriptor;
@@ -52,7 +22,7 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
 
     m_Data.emplace(std::pair<qintptr, std::unique_ptr<ClientData>>(descriptor, std::make_unique<ClientData>(descriptor, p_socket)));
 
-    this->p_Data->emplace(m_Data.at(descriptor).get()->getId(), m_Data.at(descriptor).get()->getThis());
+    this->p_Data->emplace(m_Data.at(descriptor).get()->getId(), m_Data.at(descriptor).get());
 
     if (m_a) {
         p_timer = new QTimer;
@@ -68,8 +38,6 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
 #ifdef TEST
         qDebug() << "DELETE ";
 #endif
-        p_timer = new QTimer;
-        QObject::connect(p_timer, &QTimer::timeout, this, &FlowOfIncomingRequestsThread::run);
         p_timer->start(1000);
         });
 
@@ -116,8 +84,7 @@ void FlowOfIncomingRequestsThread::slotReadyRead() {
 
 void FlowOfIncomingRequestsThread::discSocket() {
 
-    delete p_timer;
-    p_timer = nullptr;
+    p_timer->stop();
 
     this->p_socket = (QTcpSocket*)sender();
     this->p_socket->deleteLater();
@@ -149,14 +116,16 @@ Queue<qintptr>* FlowOfIncomingRequestsThread::getQueue() { return this->p_Queue;
 void FlowOfIncomingRequestsThread::workClientData() {
 
     ClientData *p_tenp = (ClientData*)sender();
-
+#ifdef TEST
     qDebug() << m_Data.size();
-
+#endif
     this->m_Data.erase(p_tenp->getKey());
+    //this->p_Data->erase(p_tenp->getId());
 
+#ifdef TEST
     qDebug() << m_Data.size();
-
     qDebug() << "workClientData";
+#endif
 }
 
 
@@ -175,7 +144,7 @@ void RequestProcessingThread::run() {
 }
 
 
-MessageThread::MessageThread(Queue<QByteArray>& QueueResult, Data<ClientData> &data) {
+MessageThread::MessageThread(Queue<QByteArray>& QueueResult, Data &data) {
 
     this->p_QueueResult = &QueueResult;
     this->p_Data        = &data;

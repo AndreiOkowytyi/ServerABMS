@@ -5,35 +5,15 @@
 
 #define TEST // Вывод дополнительной информации.
 
-#include <qtcpsocket.h>
 #include <map>
 #include <qbytearray.h>
-#include <QObject>
 #include <QThread>
 #include <QTimer>
 #include <qdatastream.h>
 
 #include "queue_for_working_with_threads.h"
 #include "secondary_task_control_unit.h"
-
-class ClientData : public QObject {
-	Q_OBJECT
- public:
-	 ClientData(qintptr key, QTcpSocket* Socket, int id = 0);
-
-	 unsigned int getKey();
-	 QTcpSocket* getSocket();
-	 int getId();
-	 ClientData* getThis();
-
- private:
-	 qintptr m_key = 0;
-	 QTcpSocket* p_Socket = nullptr;
-	 int m_id = 0;
-
-signals:
-	void delete_();
-};
+#include "working_with_data.h"
 
 class WorkingThread {
  public:
@@ -47,7 +27,7 @@ class FlowOfIncomingRequestsThread : public QObject { // Класс отвечающий за при
 	Q_OBJECT
  public:
 	 FlowOfIncomingRequestsThread(Queue<QByteArray> &QueueRequest,
-		 Queue<qintptr>*descriptor, Data<ClientData> &data);
+		 Queue<qintptr>*descriptor, Data &data);
 	 ~FlowOfIncomingRequestsThread();
 
      void newConnection(qintptr descriptor);
@@ -58,7 +38,7 @@ class FlowOfIncomingRequestsThread : public QObject { // Класс отвечающий за при
      Queue<qintptr>    *p_Queue        = nullptr; // Очередь запросов на добавления подключения.
 	 Queue<QByteArray> *p_QueueRequest = nullptr; // Очередь для добавления готовых запросов для последующих потоков.
 	 QTcpSocket        *p_socket       = nullptr; // Указатель для работы с сокетом.
-	 Data<ClientData>  *p_Data         = nullptr;
+	 Data              *p_Data         = nullptr;
 
 	 std::map<qintptr, std::unique_ptr<ClientData>>m_Data;
 
@@ -92,12 +72,12 @@ class RequestProcessingThread : public WorkingThread { // Обработка запросов
 
 class MessageThread : public WorkingThread { // Отправка готовых звпросов
  public:
-	 MessageThread(Queue<QByteArray> &QueueResult, Data<ClientData> &data);
+	 MessageThread(Queue<QByteArray> &QueueResult, Data &data);
 	 void run();
 
  private:
 	Queue<QByteArray> *p_QueueResult = nullptr;
 	QTcpSocket *p_socket             = nullptr;
-	Data<ClientData> *p_Data         = nullptr;
+	Data       *p_Data               = nullptr;
 };
 #endif //WORKING_THREAD

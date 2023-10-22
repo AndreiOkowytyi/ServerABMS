@@ -16,7 +16,8 @@ SOURCES += \
     secondary_task_control_unit.cpp \
     server.cpp \
     flow_control_block.cpp \
-    working_thread.cpp
+    working_thread.cpp \
+    working_with_data.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -24,7 +25,8 @@ HEADERS += \
     secondary_task_control_unit.h \
     server.h \
     flow_control_block.h \
-    working_thread.h
+    working_thread.h \
+    working_with_data.h
 
 FORMS += \
     mainwindow.ui

@@ -28,7 +28,7 @@ class FlowControlBlock : public QObject {
 	 RequestProcessingThread *p_procassingThread = nullptr;   // Поток для обработки сообщений, и работа с СУБД.
 	 MessageThread *p_mesThread                  = nullptr;   // Поток для отправки сообщений.
 
-	 Data<ClientData>m_Data;
+	 Data m_Data;
 
 	 Queue<QByteArray> m_QueueRequest;                           // Очередь для работы с базой данных.
 	 Queue<QByteArray> m_QueueResult;                            // Очередь для работы с результатом запроса к базе данных.
