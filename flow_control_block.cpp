@@ -71,7 +71,7 @@ void FlowControlBlock::createThread(const short* const thread_work) {
 
 	std::vector<std::thread>v_thread;
 
-    for (short x = 0; x < thread_work[0]; ++x) {
+    for (short x = 0; x < 2; ++x) {
 
 		this->m_v_QueueDescriptor.emplace_back(std::make_unique<Queue<qintptr>>());
 

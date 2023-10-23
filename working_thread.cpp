@@ -27,7 +27,7 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
     if (m_a) {
         p_timer = new QTimer;
         QObject::connect(p_timer, &QTimer::timeout, this, &FlowOfIncomingRequestsThread::run);
-        p_timer->start(1000);
+        p_timer->start(1);
         m_a = false;
     }
 
@@ -38,7 +38,7 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
 #ifdef TEST
         qDebug() << "DELETE ";
 #endif
-        p_timer->start(1000);
+        p_timer->start(1);
         });
 
     QObject::connect(m_Data.at(descriptor).get(), &ClientData::delete_, this, &FlowOfIncomingRequestsThread::workClientData, Qt::QueuedConnection);
@@ -72,8 +72,8 @@ void FlowOfIncomingRequestsThread::slotReadyRead() {
             in >> message;
 
 #ifdef TEST
-            qDebug() << "Massege socket :" << message + " " + QString::number(p_socket->socketDescriptor());
-            std::cout << "Thread id slotReadyRead: " << std::this_thread::get_id() << std::endl;
+           // qDebug() << "Massege socket :" << message + " " + QString::number(p_socket->socketDescriptor());
+            //std::cout << "Thread id slotReadyRead: " << std::this_thread::get_id() << std::endl;
 #endif
             this->m_buffer = 0;
             break;
@@ -98,7 +98,7 @@ void FlowOfIncomingRequestsThread::discSocket() {
 void FlowOfIncomingRequestsThread::run() {
 
 #ifdef TEST
-    std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
+    //std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
 #endif
 
     if (this->m_v) {
@@ -109,7 +109,11 @@ void FlowOfIncomingRequestsThread::run() {
     else if (!this->p_Queue->empty()) this->newConnection(this->p_Queue->back());;
 }
 
-int FlowOfIncomingRequestsThread::countClient() { return this->m_count_client; }
+int FlowOfIncomingRequestsThread::countClient() { 
+
+
+    return this->m_count_client + this->p_Queue->size(); 
+}
 
 Queue<qintptr>* FlowOfIncomingRequestsThread::getQueue() { return this->p_Queue; }
 
@@ -120,7 +124,7 @@ void FlowOfIncomingRequestsThread::workClientData() {
     qDebug() << m_Data.size();
 #endif
     this->m_Data.erase(p_tenp->getKey());
-    //this->p_Data->erase(p_tenp->getId());
+    //this->p_Data->erase(p_tenp->getId()); // Test
 
 #ifdef TEST
     qDebug() << m_Data.size();

@@ -17,6 +17,7 @@ class Queue{
      void emplace(T&& data);
 	 T back();
 	 bool empty();
+	 int size();
 
  private:
 	 std::queue<T>           m_queue;
@@ -57,6 +58,12 @@ bool Queue<T>::empty() {
 
 	std::unique_lock<std::mutex> temp_lock(this->m_mut);
 	return this->m_queue.empty();
+}
+
+template<class T>
+int Queue<T>::size() {
+
+	return this->m_queue.size();
 }
 
 #endif //QUEUE_FOR_WORKONG_WITH_THREADS
