@@ -13,20 +13,32 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     queue_for_working_with_threads.cpp \
+    request_control_block.cpp \
     secondary_task_control_unit.cpp \
     server.cpp \
     flow_control_block.cpp \
     working_thread.cpp \
-    working_with_data.cpp
+    working_with_data.cpp \
+    working_with_database_client_information.cpp \
+    working_with_database_personal.cpp \
+    working_with_database_personal_setting.cpp \
+    working_with_database_product.cpp \
+    working_with_database_stock.cpp
 
 HEADERS += \
     mainwindow.h \
     queue_for_working_with_threads.h \
+    request_control_block.h \
     secondary_task_control_unit.h \
     server.h \
     flow_control_block.h \
     working_thread.h \
-    working_with_data.h
+    working_with_data.h \
+    working_with_database_client_information.h \
+    working_with_database_personal.h \
+    working_with_database_personal_setting.h \
+    working_with_database_product.h \
+    working_with_database_stock.h
 
 FORMS += \
     mainwindow.ui
