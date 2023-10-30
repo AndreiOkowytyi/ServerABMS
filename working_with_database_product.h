@@ -6,11 +6,13 @@
 #include <string>
 
 class ProductionDatabaseWrite {
+ public:
 	virtual void workingDatabase(std::string& request) = 0;
 	virtual ~ProductionDatabaseWrite() {}
 };
 
 class ProductionDatabaseRecord {
+ public:
 	virtual void workingDatabase(std::string& request) = 0;
 	virtual ~ProductionDatabaseRecord() {}
 };

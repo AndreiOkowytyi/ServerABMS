@@ -5,12 +5,14 @@
 
 #include <string>
 
-class  ClientInormationDatabaseWrite {
+class ClientInormationDatabaseWrite {
+ public:
 	virtual void workingDatabase(std::string& request) = 0;
 	virtual ~ClientInormationDatabaseWrite() {}
 };
 
-class  ClientInformationDatabaseRecord {
+class ClientInformationDatabaseRecord {
+ public:
 	virtual void workingDatabase(std::string& request) = 0;
 	virtual ~ClientInformationDatabaseRecord() {}
 };

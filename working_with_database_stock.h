@@ -6,13 +6,13 @@
 #include <string>
 
 class StockDatabaseWrite {
-public:
+ public:
 	virtual void workingDatabase(std::string& request) = 0;
 	virtual ~StockDatabaseWrite() {}
 };
 
 class StockDatabaseRecord {
-public:
+ public:
 	virtual void workingDatabase(std::string& request) = 0;
 	virtual ~StockDatabaseRecord() {}
 };
