@@ -12,6 +12,7 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    processing_customer_requests.cpp \
     queue_for_working_with_threads.cpp \
     request_control_block.cpp \
     secondary_task_control_unit.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
+    processing_customer_requests.h \
     queue_for_working_with_threads.h \
     request_control_block.h \
     secondary_task_control_unit.h \

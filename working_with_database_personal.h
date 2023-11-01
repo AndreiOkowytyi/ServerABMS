@@ -7,13 +7,13 @@
 
 class PersonalDatabaseWrite {
  public:
-	virtual void workingDatabase(std::string& request) = 0;
+	virtual std::string workingDatabase() = 0;
 	virtual ~PersonalDatabaseWrite() {}
 };
 
 class  PersonalDatabaseRecord {
  public:
-	virtual void workingDatabase(std::string& request) = 0;
+	virtual std::string workingDatabase() = 0;
 	virtual ~PersonalDatabaseRecord() {}
 };
 

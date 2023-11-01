@@ -5,9 +5,9 @@ RequestStock::RequestStock() {
 
 }
 
-void RequestStock::getRequest(std::string& request) {
+std::string RequestStock::getRequest(const short index) {
 
-
+	return "";
 }
 
 
@@ -16,9 +16,9 @@ RequestProduction::RequestProduction() {
 
 }
 
-void RequestProduction::getRequest(std::string& request) {
+std::string RequestProduction::getRequest(const short index) {
 
-
+	return "";
 }
 
 
@@ -27,20 +27,19 @@ RequestPersonal::RequestPersonal() {
 
 }
 
-void RequestPersonal::getRequest(std::string& request) {
+std::string RequestPersonal::getRequest(const short index) {
 
-
+	return "";
 }
 
 
 RequestPersonalSetting::RequestPersonalSetting() {
 
-
 }
 
-void RequestPersonalSetting::getRequest(std::string& request) {
+std::string RequestPersonalSetting::getRequest(const short index) {
 
-
+	return "";
 }
 
 
@@ -49,9 +48,9 @@ RequestClientInformation::RequestClientInformation() {
 
 }
 
-void RequestClientInformation::getRequest(std::string& request) {
+std::string RequestClientInformation::getRequest(const short index) {
 
-
+	return "";
 }
 
 
@@ -60,9 +59,9 @@ WriteStock::WriteStock() {
 
 }
 
-void WriteStock::writeDatabase(std::string& request) {
+std::string WriteStock::writeDatabase(const short index) {
 
-
+	return "";
 }
 
 
@@ -71,9 +70,9 @@ WriteProduction::WriteProduction() {
 
 }
 
-void WriteProduction::writeDatabase(std::string& request) {
+std::string WriteProduction::writeDatabase(const short index) {
 
-
+	return "";
 }
 
 
@@ -82,9 +81,9 @@ WritePersonal::WritePersonal() {
 
 }
 
-void WritePersonal::writeDatabase(std::string& request) {
+std::string WritePersonal::writeDatabase(const short index) {
 
-
+	return "";
 }
 
 
@@ -93,9 +92,9 @@ WritePersonalSetting::WritePersonalSetting() {
 
 }
 
-void WritePersonalSetting::writeDatabase(std::string& request) {
+std::string WritePersonalSetting::writeDatabase(const short index) {
 
-
+	return "";
 }
 
 
@@ -104,9 +103,9 @@ WriteClientInformation::WriteClientInformation() {
 
 }
 
-void WriteClientInformation::writeDatabase(std::string& request) {
+std::string WriteClientInformation::writeDatabase(const short index) {
 
-
+	return "";
 }
 
 
@@ -119,9 +118,9 @@ BlockRequestDatabase::BlockRequestDatabase() {
 	this->m_v_BlockRequestDatabase.emplace_back(std::make_unique<RequestClientInformation>());
 }
 
-void BlockRequestDatabase::requestDatabase(std::string& request) {
+std::string BlockRequestDatabase::requestDatabase(const short index_group, const short index_request) {
 
-
+	return "";
 }
 
 
@@ -134,18 +133,18 @@ BlockWriteDatabase::BlockWriteDatabase() {
 	this->m_v_BlockWriteDatabase.emplace_back(std::make_unique<WriteClientInformation>());
 }
 
-void BlockWriteDatabase::writeDatabase(std::string& request) {
+std::string BlockWriteDatabase::writeDatabase(const short index_group, const short index_request) {
 
-
+	return "";
 }
 
 
-void RequestControlBlockDatabase::requestDatabase(std::string& request) {
+std::string RequestControlBlockDatabase::requestDatabase(const short index_group, const short index_request) {
 
-
+	return "";
 }
 
-void RequestControlBlockDatabase::writeDatabase(std::string& request) {
+std::string RequestControlBlockDatabase::writeDatabase(const short index_group, const short index_request) {
 
-
+	return "";
 }

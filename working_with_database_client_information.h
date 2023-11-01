@@ -7,13 +7,13 @@
 
 class ClientInormationDatabaseWrite {
  public:
-	virtual void workingDatabase(std::string& request) = 0;
+	virtual std::string workingDatabase() = 0;
 	virtual ~ClientInormationDatabaseWrite() {}
 };
 
 class ClientInformationDatabaseRecord {
  public:
-	virtual void workingDatabase(std::string& request) = 0;
+	virtual std::string workingDatabase() = 0;
 	virtual ~ClientInformationDatabaseRecord() {}
 };
 

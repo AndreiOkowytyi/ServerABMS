@@ -7,13 +7,13 @@
 
 class StockDatabaseWrite {
  public:
-	virtual void workingDatabase(std::string& request) = 0;
+	virtual std::string workingDatabase() = 0;
 	virtual ~StockDatabaseWrite() {}
 };
 
 class StockDatabaseRecord {
  public:
-	virtual void workingDatabase(std::string& request) = 0;
+	virtual std::string workingDatabase() = 0;
 	virtual ~StockDatabaseRecord() {}
 };
 
