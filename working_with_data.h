@@ -8,9 +8,13 @@
 #include <mutex>
 #include <condition_variable>
 
+/*
+ClientData - предаствал€ет из себ€ класс в котором хранитьс€ информации о клиенте.
+*/
+
 class ClientData : public QObject {
 	Q_OBJECT
-public:
+ public:
 	ClientData(qintptr key, QTcpSocket* Socket, int id = 0);
 
 	unsigned int getKey();
@@ -18,24 +22,28 @@ public:
 	int getId();
 	ClientData* getThis();
 
-private:
-	qintptr m_key = 0;
+ private:
+	qintptr m_key = 0;              // ƒескриптор.
 	QTcpSocket* p_Socket = nullptr;
 	int m_id = 0;
 
-signals:
+ signals:
 	void delete_();
 };
 
+/*
+ онтейнер представла€ет из себ€ общую базу активных пользователей,
+с которой могут работать сторонние потоки обработки запросов клиента.
+*/
 
-class Data {
-public:
+class Data { 
+ public:
 	void emplace(const int id, ClientData* data);
 	void erase(const int key);
 	ClientData* operator[] (const int id);
 	bool empty();
 
-private:
+ private:
 	std::map<int, ClientData*>m_map;
 	std::mutex                m_mut;
 	std::condition_variable   m_cv;

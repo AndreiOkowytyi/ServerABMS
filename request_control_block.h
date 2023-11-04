@@ -6,15 +6,15 @@
 #include <vector>
 #include <memory>
 
-#include "working_with_database_stock.h"
-#include "working_with_database_product.h"
-#include "working_with_database_personal.h"
-#include "working_with_database_personal_setting.h"
-#include "working_with_database_client_information.h"
+#include "working_with_database_stock.h"               // Запросы что относяться к модулю склад.
+#include "working_with_database_product.h"             // Запросы что относяться к модулю производство.
+#include "working_with_database_personal.h"            // Запросы что относяться к модулю персонал.
+#include "working_with_database_personal_setting.h"    // Запросы что относяться к модулю личные настройки.
+#include "working_with_database_client_information.h"  // Запросы что относяться к модулю информация о клиенте.
 
-// Вопрос о возвращении значения.
-
-///////////////////////////////////////
+/*
+Группа классов, реализовует модульный функционал запросов к базе данных посредством векторов. 
+*/
 
 class RequestDatabase {
  public:
@@ -67,7 +67,10 @@ class RequestClientInformation : public RequestDatabase {
 	std::vector<std::unique_ptr<ClientInformationDatabaseRecord>>m_v_RequestClientInformation;
 };
 
-//////////////////////////////////////////////////
+
+/*
+Группа классов, реализовует модульный функционал чтения из базы данных посредством векторов.
+*/
 
 class WriteDatabase {
  public:
@@ -120,7 +123,10 @@ class WriteClientInformation : public WriteDatabase {
 	std::vector<std::unique_ptr<ClientInormationDatabaseWrite>>m_v_WriteClientInformation;
 };
 
-//////////////////////////////////////////////////////////////////////
+
+/*
+Группа класов что реализовуют объединение функционала запросов на чтения, а также запись.
+*/
 
 class BlockRequestDatabase {
  public:
@@ -141,6 +147,10 @@ class BlockWriteDatabase {
 	 std::vector<std::unique_ptr<WriteDatabase>>m_v_BlockWriteDatabase;
 };
 
+
+/*
+Блок управления реализации запросов к базе данных.
+*/
 
 class RequestControlBlockDatabase {
  public:

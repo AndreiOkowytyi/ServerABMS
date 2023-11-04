@@ -5,6 +5,10 @@
 
 #include <string>
 
+/*
+Работа с СУБД -  склад.
+*/
+
 class StockDatabaseWrite {
  public:
 	virtual std::string workingDatabase() = 0;

@@ -5,6 +5,10 @@
 
 #include <string>
 
+/*
+Работа с СУБД - информация о клиенте.
+*/
+
 class ClientInormationDatabaseWrite {
  public:
 	virtual std::string workingDatabase() = 0;

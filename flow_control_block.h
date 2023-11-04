@@ -3,14 +3,19 @@
 #ifndef FLOW_CONTROL_BLOCK
 #define FLOW_CONTROL_BLOCK
 
-#define COUNT_THREAD 3             // Ветки потоков сервера
-#define COUNT_DEFAULT_THREADS 32   // Количество потоков по умолчанию.
+#define COUNT_THREAD 3            // Ветки потоков сервера
+#define COUNT_DEFAULT_THREADS 32  // Количество потоков по умолчанию.
 
 #include <thread>
 #include <vector>
 #include <qdebug.h>
 
 #include "working_thread.h" // Реализация работы потоков.
+
+/*
+Класс FlowControlBlock реализует логику распределения ресурсов, создания потоков,
+и являеться основным классом работы сервера.
+*/
 
 class FlowControlBlock : public QObject {
     Q_OBJECT
@@ -25,13 +30,13 @@ class FlowControlBlock : public QObject {
 	 void createThread(const short* const thread_work); // Запуск потоков.
 	 Queue<qintptr>* threadLoad();                      // Оценка загрузки входных потоков FlowOfIncomingRequestsThread.
 
-	 RequestProcessingThread *p_procassingThread = nullptr;   // Поток для обработки сообщений, и работа с СУБД.
-	 MessageThread *p_mesThread                  = nullptr;   // Поток для отправки сообщений.
+	 RequestProcessingThread *p_procassingThread = nullptr; // Поток для обработки сообщений, и работа с СУБД.
+	 MessageThread *p_mesThread                  = nullptr; // Поток для отправки сообщений.
 
 	 Data m_Data;
 
-	 Queue<QByteArray> m_QueueRequest;                           // Очередь для работы с базой данных.
-	 Queue<QByteArray> m_QueueResult;                            // Очередь для работы с результатом запроса к базе данных.
+	 Queue<QByteArray> m_QueueRequest; // Очередь для работы с базой данных.
+	 Queue<QByteArray> m_QueueResult;  // Очередь для работы с результатом запроса к базе данных.
 
      std::vector<std::unique_ptr<QThread>>m_v_thread;                                            // Работа с потоками.
 	 std::vector<std::unique_ptr<FlowOfIncomingRequestsThread>>m_v_FlowOfIncomingRequestsThread; // Вектор для работы с классом что принимает подключения.

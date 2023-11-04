@@ -1,5 +1,6 @@
 #include "request_control_block.h"
 
+
 RequestStock::RequestStock() {
 
 
@@ -53,6 +54,8 @@ std::string RequestClientInformation::getRequest(const short index) {
 	return "";
 }
 
+
+/*BLOCK*/
 
 WriteStock::WriteStock() {
 
@@ -109,6 +112,8 @@ std::string WriteClientInformation::writeDatabase(const short index) {
 }
 
 
+/*BLOCK*/
+
 BlockRequestDatabase::BlockRequestDatabase() {
 
 	this->m_v_BlockRequestDatabase.emplace_back(std::make_unique<RequestStock>());
@@ -138,6 +143,8 @@ std::string BlockWriteDatabase::writeDatabase(const short index_group, const sho
 	return "";
 }
 
+
+/*BLOCK*/
 
 std::string RequestControlBlockDatabase::requestDatabase(const short index_group, const short index_request) {
 

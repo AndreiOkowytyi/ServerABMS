@@ -5,6 +5,10 @@
 
 #include <string>
 
+/*
+Работа с СУБД - информация о личных настройках персонала.
+*/
+
 class PersonalSettingDatabaseWrite {
  public:
 	virtual std::string workingDatabase() = 0;

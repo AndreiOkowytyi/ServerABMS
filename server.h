@@ -5,7 +5,7 @@
 
 #include <qtcpserver.h>
 
-#include "flow_control_block.h"
+#include "flow_control_block.h" // ”правл€ющий блок сервера.
 
 class Server : public QTcpServer {
 	Q_OBJECT

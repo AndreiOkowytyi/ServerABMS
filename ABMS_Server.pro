@@ -11,7 +11,6 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
     processing_customer_requests.cpp \
     queue_for_working_with_threads.cpp \
     request_control_block.cpp \
@@ -27,7 +26,6 @@ SOURCES += \
     working_with_database_stock.cpp
 
 HEADERS += \
-    mainwindow.h \
     processing_customer_requests.h \
     queue_for_working_with_threads.h \
     request_control_block.h \
@@ -41,9 +39,6 @@ HEADERS += \
     working_with_database_personal_setting.h \
     working_with_database_product.h \
     working_with_database_stock.h
-
-FORMS += \
-    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

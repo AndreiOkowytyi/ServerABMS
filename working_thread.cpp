@@ -25,6 +25,7 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
     this->p_Data->emplace(m_Data.at(descriptor).get()->getId(), m_Data.at(descriptor).get());
 
     if (m_a) {
+
         p_timer = new QTimer;
         QObject::connect(p_timer, &QTimer::timeout, this, &FlowOfIncomingRequestsThread::run);
         p_timer->start(1);
@@ -36,7 +37,7 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
     QObject::connect(p_socket, &QTcpSocket::destroyed, this, [this]() { 
 
 #ifdef TEST
-        qDebug() << "DELETE ";
+        qDebug() << "DELETE";
 #endif
         p_timer->start(1);
         });
@@ -71,9 +72,9 @@ void FlowOfIncomingRequestsThread::slotReadyRead() {
             QString message;
             in >> message;
 
-#ifdef TEST
-           // qDebug() << "Massege socket :" << message + " " + QString::number(p_socket->socketDescriptor());
-            //std::cout << "Thread id slotReadyRead: " << std::this_thread::get_id() << std::endl;
+#ifdef TEST_1
+            qDebug() << "Massege socket :" << message + " " + QString::number(p_socket->socketDescriptor());
+            std::cout << "Thread id slotReadyRead: " << std::this_thread::get_id() << std::endl;
 #endif
             this->m_buffer = 0;
             break;
@@ -97,8 +98,8 @@ void FlowOfIncomingRequestsThread::discSocket() {
 
 void FlowOfIncomingRequestsThread::run() {
 
-#ifdef TEST
-    //std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
+#ifdef TEST_1
+    std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
 #endif
 
     if (this->m_v) {

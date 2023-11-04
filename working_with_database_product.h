@@ -5,6 +5,10 @@
 
 #include <string>
 
+/*
+Работа с СУБД -  производство.
+*/
+
 class ProductionDatabaseWrite {
  public:
 	virtual std::string workingDatabase() = 0;
