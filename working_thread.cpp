@@ -22,7 +22,7 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
 
     m_Data.emplace(std::pair<qintptr, std::unique_ptr<ClientData>>(descriptor, std::make_unique<ClientData>(descriptor, p_socket)));
 
-    this->p_Data->emplace(m_Data.at(descriptor).get()->getId(), m_Data.at(descriptor).get());
+    //this->p_Data->emplace(m_Data.at(descriptor).get()->getId(), m_Data.at(descriptor).get());
 
     if (m_a) {
 
@@ -39,7 +39,7 @@ void FlowOfIncomingRequestsThread::newConnection(qintptr descriptor) {
 #ifdef TEST
         qDebug() << "DELETE";
 #endif
-        p_timer->start(1);
+        //p_timer->start(1);
         });
 
     QObject::connect(m_Data.at(descriptor).get(), &ClientData::delete_, this, &FlowOfIncomingRequestsThread::workClientData, Qt::QueuedConnection);
@@ -88,6 +88,7 @@ void FlowOfIncomingRequestsThread::discSocket() {
     p_timer->stop();
 
     this->p_socket = (QTcpSocket*)sender();
+    this->p_socket->close();
     this->p_socket->deleteLater();
 
 #ifdef TEST
@@ -131,6 +132,8 @@ void FlowOfIncomingRequestsThread::workClientData() {
     qDebug() << m_Data.size();
     qDebug() << "workClientData";
 #endif
+
+    p_timer->start(35);
 }
 
 

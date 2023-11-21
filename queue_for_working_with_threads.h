@@ -63,6 +63,7 @@ bool Queue<T>::empty() {
 template<class T>
 int Queue<T>::size() {
 
+	std::unique_lock<std::mutex> temp_lock(this->m_mut);
 	return this->m_queue.size();
 }
 
