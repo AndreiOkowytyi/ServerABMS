@@ -10,7 +10,7 @@ Server::Server() {
 
 Server::~Server() {
 
-	if (this->p_ControlBlock != nullptr) delete p_ControlBlock;
+    if (this->p_ControlBlock != nullptr) delete p_ControlBlock;
 }
 
 void Server::incomingConnection(qintptr socketDescriptor) {

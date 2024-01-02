@@ -98,7 +98,7 @@ void FlowOfIncomingRequestsThread::discSocket() {
 }
 
 void FlowOfIncomingRequestsThread::run() {
-
+    std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
 #ifdef TEST_1
     std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
 #endif
@@ -145,6 +145,7 @@ RequestProcessingThread::RequestProcessingThread(Queue<QByteArray> &QueueRequest
 
 void RequestProcessingThread::run() {
 
+    std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
     for (;;) {
 
 
@@ -159,7 +160,7 @@ MessageThread::MessageThread(Queue<QByteArray>& QueueResult, Data &data) {
 }
 
 void MessageThread::run() {
-
+    std::cout << "RequestsThread run. Thread ID: " << std::this_thread::get_id() << std::endl;
     for (;;) {
 
 

@@ -7,5 +7,7 @@ int main(int argc, char *argv[])
 
     Server server;
 
-    return a.exec();
+    a.exec();
+
+    return 0;
 }
